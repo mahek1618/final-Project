@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="login.css">
+</head>
+<body>
+
+    <div class="mainbox">
+     <div class="polaroid">
+          <img src="logo3.jpg" height="50" width="50">
+        </div>
+
+        <div class="box1">
+          <img src="/welcome 2.jpg">
+        </div>
+          
+        <div class="box">
+            <div class="container">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" id="LogUser" placeholder="Enter Username" >
+                <div id="emailNametag"></div>
+            
+                <label for="psw"><b>Password</b></label>
+                <input type="password" id="LogPassword"placeholder="Enter Password" >
+                <div id="passwordtag"></div>
+            
+                <button type="button"id="loginbtn">Login</button>
+                <label>
+                  <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+                <span class="psw">Forgot <a href="#">password?</a></span>
+              </div>
+            
+              
+              <div class="container" >
+                 <!-- <span class="noaccount">Don't have an account ?  </span> -->
+                 <p>Don't have an account? <a href="signup.html">Sign Up</a>.</p>
+                <!-- <button type="button2" class="signupbtn">Sign Up</button> -->
+                
+              </div>
+              
+        </div>
+    </div>
+    <script type="text/Javascript">
+ var UserName2=document.getElementById("LogUser");
+    var password2=document.getElementById("LogPassword");
+    var lu = document.getElementById("loginbtn");
+    lu.addEventListener("click", function(){
+       fetch("http://localhost:58659/api/Login",{
+          method:'POST',
+          headers:{
+              'content-type':'application/json'
+          },
+          body:JSON.stringify({
+              "UserName": UserName2.value,
+              "UserPassword":password2.value,
+          })
+      }).then( res=>{return res.json();})
+        .then(data=>show(data))
+      .catch(error=>console.log(error))
+    });
+  function show(data)
+  {
+   
+    if(data!=null && data!=undefined && data!="")
+    {
+       sessionStorage.setItem("token",data.token);
+       sessionStorage.setItem("Id",data.id);
+    }
+   Call();
+  }
+ 
+
+  function Call()
+  {
+    if(sessionStorage.getItem("token")!=null)
+  {
+    window.location.href="Dashboard.html";
+  }
+  else
+  {
+    alert("Login Credentials are wrong");
+  }
+  }
+    </script>
+
+</body>
+</html>
